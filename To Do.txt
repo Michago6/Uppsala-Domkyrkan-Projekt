@@ -1,1 +1,12 @@
 Att göra:
+
+1) Algoritm för att göra sträng till lista
+
+2) Funktion för inmatning av svar
+
+3) Dictionary med alternativ
+
+4) Funtion för att jämföra svar med dictionary
+
+5) Funktion för att avgöra din action beronende på svarer från förgående funktion (Att göra punkt 4)
+
