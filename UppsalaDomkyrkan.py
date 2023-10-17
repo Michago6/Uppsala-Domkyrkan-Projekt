@@ -21,3 +21,43 @@ def stringToList(phrase):
         else:
             strng.append(item)
     return lst
+
+def determineAction(input, location):
+    verbExists = False
+    adjectiveExists = False
+    nounExists = False
+    freeFromForbiddenWords = True
+    for action in location: 
+        for valueIndex in range(4):
+            for word in stringToList(input):
+                for item in location[action][valueIndex]:
+                    if word == item:
+                        if valueIndex == 0:
+                            verbExists = True
+                            break
+                        elif valueIndex == 1:
+                            adjectiveExists = True
+                            break
+                        elif valueIndex == 2:
+                            nounExists = True
+                            break
+                        elif valueIndex == 3:
+                            freeFromForbiddenWords = False
+                            break
+        retAction = True
+        if len(location[action][0]) != 0 and verbExists == False:
+            retAction = False
+        elif len(location[action][1]) != 0 and adjectiveExists == False:
+            retAction = False
+        elif len(location[action][2]) != 0 and nounExists == False:
+            retAction = False
+        elif len(location[action][3]) != 0  and freeFromForbiddenWords == False:
+            retAction = False
+        if retAction:
+            return action
+        else:
+            return "Nothing Happened"
+
+name = "player"
+actionsA1 = {"talkToAletta":[["snacka","prata","tala"],[],["aletta"],["inte"]]}
+# actionsA_ = {"action_name":[[verbs],[adjectives],[nouns],[forbiddenwords]]}
