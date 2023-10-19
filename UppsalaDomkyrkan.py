@@ -82,5 +82,21 @@ def splash():
     
 name = splash()
 
+def levelOne():
+    print(f"Välkommen till domkyrkan {name}. Börja med att prata med Aletta för att få ditt första uppdrag.")
+    playerInput = input("Vad vill du göra? ")
+    
+    if determineAction(playerInput, actionsA1) == "goToAletta":
+        print("Du gick till Aletta")
+    else:
+        print(determineAction(playerInput, actionsA1))
+    
+    playerInput = input("Vad vill du göra? ")
+
+    if determineAction(playerInput, actionsA1) == "goToAletta":
+        print("Du pratade med Aletta")
+    else:
+        print(determineAction(playerInput, actionsA1))
+
 actionsA1 = {"talkToAletta":[["snacka","prata","tala"],[],["aletta"],["inte"]]}
 # actionsA_ = {"action_name":[[verbs],[adjectives],[nouns],[forbiddenwords]]}
