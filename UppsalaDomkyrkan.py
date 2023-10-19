@@ -1,5 +1,3 @@
-print("Hello Uppsala")
-
 def stringToList(phrase):
     #Funktionen tar ditt svar, separerar springen till en lista med alla ord i din mening
     #listan är kronologisk, första ord till sista ord
@@ -58,6 +56,31 @@ def determineAction(input, location):
         else:
             return "Nothing Happened"
 
-name = "player"
+def splash():
+    print(r"""\
+
+
+  ▄   █ ▄▄  █ ▄▄    ▄▄▄▄▄   ██   █    ██       ██▄   ████▄ █▀▄▀█ █  █▀ ▀▄    ▄ █▄▄▄▄ █  █▀ ██      ▄               
+   █  █   █ █   █  █     ▀▄ █ █  █    █ █      █  █  █   █ █ █ █ █▄█     █  █  █  ▄▀ █▄█   █ █      █              
+█   █ █▀▀▀  █▀▀▀ ▄  ▀▀▀▀▄   █▄▄█ █    █▄▄█     █   █ █   █ █ ▄ █ █▀▄      ▀█   █▀▀▌  █▀▄   █▄▄█ ██   █             
+█   █ █     █     ▀▄▄▄▄▀    █  █ ███▄ █  █     █  █  ▀████ █   █ █  █     █    █  █  █  █  █  █ █ █  █             
+█▄ ▄█  █     █                 █     ▀   █     ███▀           █    █    ▄▀       █     █      █ █  █ █             
+ ▀▀▀    ▀     ▀               █         █                    ▀    ▀             ▀     ▀      █  █   ██             
+                        █   █ ▀         ▀                                                    ▀                      
+▄███▄     ▄▄▄▄▀ ▄▄▄▄▀     ██       ▄   ▄███▄      ▄     ▄▄▄▄▀ ▀▄    ▄ █▄▄▄▄   ▄▄▄▄▄    ▄▄▄▄▄   █ ▄▄  ▄███▄   █     
+█▀   ▀ ▀▀▀ █ ▀▀▀ █        █ █       █  █▀   ▀      █ ▀▀▀ █      █  █  █  ▄▀  █     ▀▄ █     ▀▄ █   █ █▀   ▀  █     
+██▄▄       █     █        █▄▄█ █     █ ██▄▄    ██   █    █       ▀█   █▀▀▌ ▄  ▀▀▀▀▄ ▄  ▀▀▀▀▄   █▀▀▀  ██▄▄    █     
+█▄   ▄▀   █     █         █  █  █    █ █▄   ▄▀ █ █  █   █        █    █  █  ▀▄▄▄▄▀   ▀▄▄▄▄▀    █     █▄   ▄▀ ███▄  
+▀███▀    ▀     ▀             █   █  █  ▀███▀   █  █ █  ▀       ▄▀       █                       █    ▀███▀       ▀ 
+                            █     █▐           █   ██                  ▀                         ▀                 
+                           ▀      ▐                                                                                
+
+
+    """)
+    name = input("skriv ditt namn: ")
+    return name
+    
+name = splash()
+
 actionsA1 = {"talkToAletta":[["snacka","prata","tala"],[],["aletta"],["inte"]]}
 # actionsA_ = {"action_name":[[verbs],[adjectives],[nouns],[forbiddenwords]]}
