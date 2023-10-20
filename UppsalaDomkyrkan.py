@@ -21,6 +21,7 @@ def stringToList(phrase):
     return lst
 
 def determineAction(input, location):
+    location["openInv"] = [["öppna","se","kolla","titta","open","opn"],[],["ryggsäck", "ryggsäcken","inv","inventory"],[]]
     for action in location:
         verbExists = False
         adjectiveExists = False
@@ -74,6 +75,15 @@ def splash():
     print(f"Hej {name}, välkommen till Uppsala! Jag heter Karl och vi befinner oss just nu i domkyrkan i mitten av staden. Året är 1500 och vintern närmar sig. Jag är en föreläsare på Uppsala\nuniversitet och jag undervisar i datavetenskap tillsammans med min kollega Aletta. Just nu är Aletta väldigt arg på mig och vägrar prata med mig eftersom jag lämnade henne själv igår på\nvår gemensamma föreläsningen så att hon behövde presentera mina slides. Skulle du kunna prata med henne och få henne att förlåta mig?\n")
     return name
 
+def openInv(inventory):
+    if len(inventory) == 0:
+        print("Din ryggsäck är tom")
+    else:
+        print("I din ryggsäck ser du ", end="")
+    for item in inventory:
+        print(f"{item} ",end="")
+        print()
+
 def levelOne(inventory):
     print("Du är i domkyrkan.")
     pos = "karl"
@@ -81,18 +91,13 @@ def levelOne(inventory):
         playerInput = input("Vad vill du göra? -> ")
         action = determineAction(playerInput, actionsA1)
         if action == "openInv":
-            if len(inventory) == 0:
-                print("Din ryggsäck är tom")
-            else:
-                print("I din ryggsäck ser du ", end="")
-            for item in inventory:
-                print(f"{item} ",end="")
+            openInv(inventory)
         elif action == "talkToAletta":
             if pos == "aletta":
                 print(f"Hej {name}! Jag såg att du pratade med Karl. Hälsa att jag fortfarande är arg på honom om du återvänder till honom.\nMen men... det är bra att du är här. Det är så att jag har glömt min plånbok i aulan av universitetshuset och det hade gjort mig glad om du kunde hitta och återlämna den till mig.\n Du låna min häst för att ta dig dit. Ta denna karta, den kommer att leda dig till universitetshuset.\n(Kolla nu i din ryggsäck så borde du se kartan)")
                 inventory.append("en karta")
             else:
-                print("Du försöker prata med Aletta men hon på andra sidan av salen.")
+                print("Du försöker prata med Aletta men hon står på andra sidan av salen.")
         elif action == "goToAletta":
             if pos == "aletta":
                 print("Du är redan vid Aletta och hon stirrar dig i ögonen, ner in i din själ...")
@@ -102,8 +107,9 @@ def levelOne(inventory):
         elif action == "takeTheHorseToLvlTwo":
             if pos == "horse":
                 if "en karta" in inventory:
-                    print("Du tar hästen och rider till universitetshuset")
-                    levelTwo()
+                    print("Du tar hästen och rider till universitetshuset\n")
+                    print("Du står framför två stora dörrar som leder in i byggnaden, ena dörren verkar stå på glänt.")
+                    levelTwo(inventory)
                     break
                 else:
                     print("Du kan inte vägen till universitetshuset...")
@@ -128,15 +134,25 @@ def levelOne(inventory):
         else:
             print("Inget hände...")
         print()
-def levelTwo():
-    print("Du är vid universitetshuset")
-
-
-
+def levelTwo(inventory):
+    print("Du är vid entrén av universitetshuset.")
+    pos = "entrance"
+    while True:
+        playerInput = input("Vad vill du göra? -> ")
+        action = determineAction(playerInput, actionsA2)
+        match action:
+            case "openInv":
+                openInv(inventory)
+            case "enter":
+                print("Du går in i universitetshuset och befinner dig nu i aulan där det sker en föreläsning om bibelkunskap.")
+            case _:
+                print("Inget hände...")
+        print()
+                
+        
 #Globala variabler:
 inventory = []
 actionsA1 = {
-    "openInv":[["öppna","se","kolla","titta"],[],["ryggsäck", "ryggsäcken"],[]],
     "talkToAletta":[["snacka","prata","tala"],[],["aletta"],["inte"]],
     "goToAletta":[["gå"],[],["aletta"],["inte"]],
     "takeTheHorseToLvlTwo":[["rida","rid","ta"],["universitetshuset"],[],["inte"]],
@@ -144,6 +160,9 @@ actionsA1 = {
     "goToHorse":[["gå"],[],["häst","hästen"],["inte"]],
     "aletta":[[],[],["aletta"],[]],
     "karl":[[],[],["karl"],[]]
+    }
+actionsA2 = {
+    "enter":[["gå"],["in"],[],[]]
     }
 #actionsA_ = {"action_name":[[verbs],[adjectives],[nouns],[forbiddenwords]]}
 
