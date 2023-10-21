@@ -1,5 +1,7 @@
 Att göra:
 
+* "rider" som verb i häst action i actionsA1
+
 1) Algoritm för att göra sträng till lista
 
 2) Funktion för inmatning av svar
