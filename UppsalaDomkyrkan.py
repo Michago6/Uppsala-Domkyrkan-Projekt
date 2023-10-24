@@ -22,6 +22,7 @@ def stringToList(phrase):
 
 def determineAction(input, location):
     location["openInv"] = [["öppna","se","kolla","titta","open","opn"],[],["ryggsäck", "ryggsäcken","inv","inventory"],[]]
+    location["openMap"] = [["öppna","se","kolla","titta","open","opn","ta","använd"],[],["map","karta","kartan"],[]]
     for action in location:
         verbExists = False
         adjectiveExists = False
@@ -82,7 +83,38 @@ def openInv(inventory):
         print("I din ryggsäck ser du följande föremål: ", end="")
     for item in inventory:
         print(f"{item}, ",end="")
-    print()
+def openMap(inventory):
+    if "en karta" in inventory:
+        print(r"""                                                                                                        
+       █████████▄█████████▄                                  
+     ███       ██°°°°°   ███▄▄▄   ██████████████████▄        
+     █    ▲ ▲  ▲     ▲     °███████░░░~       N     ██       
+     ██   ▀ ▀  ▀     ▀            ~░~~░~      ▲     ██       
+      ██  ░░░░░░░ ▲ ░░            ~░░~░░░~ W◄   ►E   █       
+       █  ░ ▲   ░░▀ ░ ░▲           ~░░┼~░░┼   ▼      █       
+      ██  ▲ ▀     ░░░ ░▀            ~░█~~~█░░~S      █       
+      █   ▀         ▲ ░░          ┼  ~█░░░█~░▓▓▓     ██      
+     ██             ▀             █▄▄█▒█~█▒█~▓░░~~~   █      
+     █     ▄▄▄▄▄▄▄▄              █████▒█ █▒█▓▓~░░░░~  █▄     
+    ██▄▄▄▄▄▄█▄▄▄▄█▄▄▄▄▄▄▄       ██████▒█ █▒█▓░░~~░░░░~██▄    
+    █ ▐▓▓▓▓▓█▓▓▓▓█▓▓▓▓▓▌       █▒▒███▒▒▒█▒♀█~ ░░░~~~░░░██    
+   █  ▐▒▒╬▒╬█╬▒▒╬█╬▒╬▒▒▌     ▓█▒▒╫╫▒█████▒▒▒█   ░░░~ ~░░█    
+    █▐█▄▀▀▀▀▓▀▀▀▀▓▀▀▀▀▄█▌    ▓█▓▒▒▒█▒▒╫╫▒█▒▒█      ░░~~~█    
+    █▐▒▒▒▒▒▒▓▓▓▓▓▓▒▒▒▒▒▒▌▓      ▓▓▓█▒▒▒▒▒▒█∩▓       ░░░░█    
+    █▐▒▒▒╬▒╬▓╬▓▓╬▓╬▒╬▒▒▒▌▓          ▓▓▓▓▓▓█▓■         ░░█▄   
+    █▓▀▀▒▒▒▒▓▓∩∩▓▓▒▒▒▒▀▀▓               ■  ■          ░░██   
+    █▓▓▓▀▀▀▀██▀▀██▀▀▀▀▓▓           ■  ■          ▲     ░░█   
+    █   ▓▓▓▓▓▓▓▓▓▓▓▓▓▓           ■               ▀    ▲ ██   
+    ██      ▓▓▓▓▓▓                               ░░▲  ▀██▓   
+     ███     ▓▓▓▓■      ■  ■     ■            ▲ ░ ░▀ ░░█▓    
+      ▀▀██°        ■  ■     ■   ■             ▀░   ░░  █▓    
+         ███                 ▄■    °  °       ░░ ███████     
+           ▀█████ °     ████████  °°°° °     ████▓▓▓▓▓▓      
+              ▀▀▀███████    ▀▀▀████°°° ███████▓▓▓            
+                    ▀▀          ▀▀█████▓▓▓▓▓▓▓                          
+        """)
+    else:
+        print("Du har ingen karta...")
 
 def levelOne(inventory):
     print("Du är i domkyrkan.")
@@ -92,6 +124,8 @@ def levelOne(inventory):
         action = determineAction(playerInput, actionsA1)
         if action == "openInv":
             openInv(inventory)
+        elif action == "openMap":
+            openMap(inventory)
         elif action == "talkToAletta":
             if pos == "aletta":
                 if "Alettas plånbok" in inventory:
@@ -154,8 +188,10 @@ def levelTwo(inventory):
         match action:
             case "openInv":
                 openInv(inventory)
+            case "openMap":
+                openMap(inventory)
             case "goToJohan":
-                print(f"Hej {name} vad kul att se dig här! Kan jag hjälpa dig?")
+                print(f"Hey {name} how fun to see you here at the bible lecture! If theres anything I can do for you just tell me.")
                 pos = "vid johan"
             case "enter":
                 if pos != "aulan":
@@ -163,6 +199,12 @@ def levelTwo(inventory):
                     pos = "aulan"
                 else:
                     print("Du står i aulan.")
+            case "goToHorse":
+                if pos == "vid hästen":
+                    print("Du kliver tre millimeter närmare hästen. Hästen ger dig en konstig blick...")
+                else:
+                    print("Du står nu brevid hästen vid entrén av domkyrkan.")
+                    pos = "vid hästen"
             case "goToReception":
                 print(f"Hej {name} välkommen till expeditionen, hur kan jag hjälpa er?")
                 pos = "i expeditionen"
@@ -170,12 +212,15 @@ def levelTwo(inventory):
                 if pos == "aulan":
                     print("Du letar hektiskt i aulan men hittar inte plånboken... Men på föreläsningen ser du lärarassistenten Johan Snider, gå till honom och fråga om han har sett Alettas plånbok.")
                 elif pos == "vid johan":
-                    print("Jag har tyvärr inte sett Alettas plånbok, testa fråga i expeditionen om de har fått in en plånbok.")
+                    print("Unfortunately I haven't seen Aletta's wallet, I suggest asking the reception if they retreived a wallet.")
                 elif pos == "i expeditionen":
                     print("Ja, vi har fått in en plånbok med Alettas namn på. Var så god och ta den!\n(Kolla nu i din ryggsäck så borde du se Alettas plånbok)")
                     inventory.append("Alettas plånbok")
                 else:
-                    print(f"Du står {pos}, gå till aulan för att leta efter plånboken.")
+                    if "Alettas plånbok" in inventory:
+                        print(f"Du står {pos}.")
+                    else:
+                        print(f"Du står {pos}, gå till aulan för att leta efter plånboken.")
             case "goToDomkyrkan":
                     print("Du tar hästen och rider till domkyrkan\n")
                     levelOne(inventory)
@@ -188,8 +233,8 @@ def levelTwo(inventory):
 inventory = []
 actionsA1 = {
     "talkToAletta":[["snacka","prata","tala"],[],["aletta"],["inte"]],
-    "goToAletta":[["gå"],[],["aletta"],["inte"]],
-    "takeTheHorseToLvlTwo":[["rida","rid","ta","åka","åk","åker"],["universitetshuset"],[],["inte"]],
+    "goToAletta":[["gå"],[],["aletta","dit","salen","närmare"],["inte"]],
+    "takeTheHorseToLvlTwo":[["rida","rid","ta","åka","åk","åker","gå"],["universitetshuset"],[],["inte"]],
     "takeTheHorseAndGetLost":[["rida","rid","ta"],[],[],["inte"]],
     "goToHorse":[["gå"],[],["häst","hästen"],["inte"]],
     "giveWalletToAletta":[["ge","återlämna","ger"],["plånbok","plonkan","plånboken","plonka"],["aletta"],["inte"]],
@@ -198,10 +243,11 @@ actionsA1 = {
     }
 actionsA2 = {
     "goToJohan":[["gå","snacka","prata","tala"],[],["johan","snider"],["inte"]],
-    "plånbok":[[],[],["plånbok","plånboken","plånka","plånkan"],[]],
+    "plånbok":[[],[],["plånbok","plånboken","plånka","plånkan","wallet"],[]],
+    "goToHorse":[["gå"],[],["häst","hästen"],["inte"]],
     "goToReception":[["gå","snacka","prata","tala","besök","fråga","frågar"],[],["expeditionen","expedition","reception","receptionen"],["inte"]],
-    "goToDomkyrkan":[["gå","rid","rida","häst","hästen","återvänd","åk"],[],["domkyrkan","aletta","karl","domkyrka","kyrka","kyrkan"],[]],
-    "enter":[["gå","öppna","dörr","dörren"],[],[],["ryggsäck","ryggsäcken","inv","inventory","säcken"]]
+    "goToDomkyrkan":[["gå","rid","rida","häst","hästen","återvänd","åk"],[],["domkyrkan","aletta","karl","domkyrka","kyrka","kyrkan","tillbaka"],[]],
+    "enter":[["gå","öppna","dörr","dörren"],[],[],["ryggsäck","ryggsäcken","inv","inventory","säcken","karta","kartan","map"]]
     }
 #actionsA_ = {"action_name":[[verbs],[adjectives],[nouns],[forbiddenwords]]}
 
