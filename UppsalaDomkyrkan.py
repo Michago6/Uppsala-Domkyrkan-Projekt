@@ -73,7 +73,7 @@ def splash():
 ----------------------------------------------------------------------------------------------------------------------------------------
     """)
     name = input("Skriv ditt namn: ")
-    print(f"Hej {name}, välkommen till Uppsala! Jag heter Karl och vi befinner oss just nu i domkyrkan i mitten av staden. Året är 1500 och vintern närmar sig. Jag är en föreläsare på Uppsala universitet och jag undervisar i datavetenskap tillsammans med min kollega Aletta. Just nu är Aletta väldigt arg på mig och vägrar prata med mig eftersom jag lämnade henne själv igår på vår gemensamma föreläsningen så att hon behövde presentera mina slides. Skulle du kunna prata med henne och få henne att förlåta mig?\n")
+    print(f"\nHej {name}, välkommen till Uppsala! Jag heter Karl och vi befinner oss just nu i domkyrkan i mitten av staden. Året är 1500 och vintern närmar sig. Jag är en föreläsare på Uppsala universitet och jag undervisar i datavetenskap tillsammans med min kollega Aletta. Just nu är Aletta väldigt arg på mig och vägrar prata med mig eftersom jag lämnade henne själv igår på vår gemensamma föreläsningen så att hon behövde presentera mina slides. Skulle du kunna prata med henne och få henne att förlåta mig?\n")
     return name
 
 def openInv(inventory):
@@ -214,8 +214,11 @@ def levelTwo(inventory):
                 elif pos == "vid johan":
                     print("Unfortunately I haven't seen Aletta's wallet, I suggest asking the reception if they retreived a wallet.")
                 elif pos == "i expeditionen":
-                    print("Ja, vi har fått in en plånbok med Alettas namn på. Var så god och ta den!\n(Kolla nu i din ryggsäck så borde du se Alettas plånbok)")
-                    inventory.append("Alettas plånbok")
+                    if "Alettas plånbok" in inventory:
+                        print("Du har redan fått Alettas plånbok.")
+                    else:
+                        print("Ja, vi har fått in en plånbok med Alettas namn på. Var så god och ta den!\n(Kolla nu i din ryggsäck så borde du se Alettas plånbok)")
+                        inventory.append("Alettas plånbok")
                 else:
                     if "Alettas plånbok" in inventory:
                         print(f"Du står {pos}.")
@@ -232,18 +235,18 @@ def levelTwo(inventory):
 #Globala variabler:
 inventory = []
 actionsA1 = {
-    "talkToAletta":[["snacka","prata","tala"],[],["aletta"],["inte"]],
+    "talkToAletta":[["snacka","prata","tala"],[],["aletta","henne","hon"],["inte"]],
     "goToAletta":[["gå"],[],["aletta","dit","salen","närmare"],["inte"]],
-    "takeTheHorseToLvlTwo":[["rida","rid","ta","åka","åk","åker","gå"],["universitetshuset"],[],["inte"]],
+    "takeTheHorseToLvlTwo":[["rida","rid","ta","åka","åk","åker","gå"],["universitetshuset","universitetsaulan"],[],["inte"]],
     "takeTheHorseAndGetLost":[["rida","rid","ta"],[],[],["inte"]],
     "goToHorse":[["gå"],[],["häst","hästen"],["inte"]],
-    "giveWalletToAletta":[["ge","återlämna","ger"],["plånbok","plonkan","plånboken","plonka"],["aletta"],["inte"]],
+    "giveWalletToAletta":[["ge","återlämna","ger"],["plånbok","plonkan","plånboken","plonka"],["aletta","henne","hon","tillbaka"],["inte"]],
     "aletta":[[],[],["aletta"],[]],
     "karl":[[],[],["karl"],[]]
     }
 actionsA2 = {
-    "goToJohan":[["gå","snacka","prata","tala"],[],["johan","snider"],["inte"]],
     "plånbok":[[],[],["plånbok","plånboken","plånka","plånkan","wallet"],[]],
+    "goToJohan":[["gå","snacka","prata","tala"],[],["johan","snider","han","honom"],["inte","expedition","expeditionen","receptionen","reception"]],
     "goToHorse":[["gå"],[],["häst","hästen"],["inte"]],
     "goToReception":[["gå","snacka","prata","tala","besök","fråga","frågar"],[],["expeditionen","expedition","reception","receptionen"],["inte"]],
     "goToDomkyrkan":[["gå","rid","rida","häst","hästen","återvänd","åk"],[],["domkyrkan","aletta","karl","domkyrka","kyrka","kyrkan","tillbaka"],[]],
