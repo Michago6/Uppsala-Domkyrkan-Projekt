@@ -154,12 +154,15 @@ def levelTwo(inventory):
         match action:
             case "openInv":
                 openInv(inventory)
-            case "enter":
-                print("Du går in i universitetshuset och befinner dig nu i aulan där det sker en föreläsning om bibelkunskap.")
-                pos = "aulan"
             case "goToJohan":
                 print(f"Hej {name} vad kul att se dig här! Kan jag hjälpa dig?")
                 pos = "vid johan"
+            case "enter":
+                if pos != "aulan":
+                    print("Du går in i universitetshuset och befinner dig nu i aulan där det sker en föreläsning om bibelkunskap.")
+                    pos = "aulan"
+                else:
+                    print("Du står i aulan.")
             case "goToReception":
                 print(f"Hej {name} välkommen till expeditionen, hur kan jag hjälpa er?")
                 pos = "i expeditionen"
@@ -182,7 +185,7 @@ def levelTwo(inventory):
                 
         
 #Globala variabler:
-inventory = ["pinne","sopborste"]
+inventory = []
 actionsA1 = {
     "talkToAletta":[["snacka","prata","tala"],[],["aletta"],["inte"]],
     "goToAletta":[["gå"],[],["aletta"],["inte"]],
@@ -194,11 +197,11 @@ actionsA1 = {
     "karl":[[],[],["karl"],[]]
     }
 actionsA2 = {
-    "enter":[["gå","öppna","dörr","dörren"],[],[],[]],
-    "plånbok":[[],[],["plånbok","plånboken","plånka","plånkan"],[]],
     "goToJohan":[["gå","snacka","prata","tala"],[],["johan","snider"],["inte"]],
+    "plånbok":[[],[],["plånbok","plånboken","plånka","plånkan"],[]],
     "goToReception":[["gå","snacka","prata","tala","besök","fråga","frågar"],[],["expeditionen","expedition","reception","receptionen"],["inte"]],
-    "goToDomkyrkan":[["gå","rid","rida","häst","hästen","återvänd","åk"],[],["domkyrkan","aletta","karl","domkyrka","kyrka","kyrkan"],[]]
+    "goToDomkyrkan":[["gå","rid","rida","häst","hästen","återvänd","åk"],[],["domkyrkan","aletta","karl","domkyrka","kyrka","kyrkan"],[]],
+    "enter":[["gå","öppna","dörr","dörren"],[],[],["ryggsäck","ryggsäcken","inv","inventory","säcken"]]
     }
 #actionsA_ = {"action_name":[[verbs],[adjectives],[nouns],[forbiddenwords]]}
 
