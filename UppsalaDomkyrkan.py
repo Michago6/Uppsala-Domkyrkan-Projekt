@@ -72,17 +72,17 @@ def splash():
 ----------------------------------------------------------------------------------------------------------------------------------------
     """)
     name = input("Skriv ditt namn: ")
-    print(f"Hej {name}, välkommen till Uppsala! Jag heter Karl och vi befinner oss just nu i domkyrkan i mitten av staden. Året är 1500 och vintern närmar sig. Jag är en föreläsare på Uppsala\nuniversitet och jag undervisar i datavetenskap tillsammans med min kollega Aletta. Just nu är Aletta väldigt arg på mig och vägrar prata med mig eftersom jag lämnade henne själv igår på\nvår gemensamma föreläsningen så att hon behövde presentera mina slides. Skulle du kunna prata med henne och få henne att förlåta mig?\n")
+    print(f"Hej {name}, välkommen till Uppsala! Jag heter Karl och vi befinner oss just nu i domkyrkan i mitten av staden. Året är 1500 och vintern närmar sig. Jag är en föreläsare på Uppsala universitet och jag undervisar i datavetenskap tillsammans med min kollega Aletta. Just nu är Aletta väldigt arg på mig och vägrar prata med mig eftersom jag lämnade henne själv igår på vår gemensamma föreläsningen så att hon behövde presentera mina slides. Skulle du kunna prata med henne och få henne att förlåta mig?\n")
     return name
 
 def openInv(inventory):
     if len(inventory) == 0:
         print("Din ryggsäck är tom")
     else:
-        print("I din ryggsäck ser du ", end="")
+        print("I din ryggsäck ser du följande föremål: ", end="")
     for item in inventory:
-        print(f"{item} ",end="")
-        print()
+        print(f"{item}, ",end="")
+    print()
 
 def levelOne(inventory):
     print("Du är i domkyrkan.")
@@ -94,10 +94,22 @@ def levelOne(inventory):
             openInv(inventory)
         elif action == "talkToAletta":
             if pos == "aletta":
-                print(f"Hej {name}! Jag såg att du pratade med Karl. Hälsa att jag fortfarande är arg på honom om du återvänder till honom.\nMen men... det är bra att du är här. Det är så att jag har glömt min plånbok i aulan av universitetshuset och det hade gjort mig glad om du kunde hitta och återlämna den till mig.\n Du låna min häst för att ta dig dit. Ta denna karta, den kommer att leda dig till universitetshuset.\n(Kolla nu i din ryggsäck så borde du se kartan)")
-                inventory.append("en karta")
+                if "Alettas plånbok" in inventory:
+                    print(f"Tack {name} för all din hjälp, jag är evigt tacksam för att du hittat min plånbok! Som tack vill jag erbjuda dig tio riksdaler.\n(Kolla nu i din ryggsäck så borde du se tio riksdaler)")
+                    inventory.append("10rdr")
+                    inventory.remove("Alettas plånbok")
+                else:
+                    print(f"Hej {name}! Jag såg att du pratade med Karl. Hälsa att jag fortfarande är arg på honom om du återvänder till honom.\nMen men... det är bra att du är här. Det är så att jag har glömt min plånbok i aulan av universitetshuset och det hade gjort mig glad om du kunde hitta och återlämna den till mig.\n Du kan låna min häst för att ta dig dit. Ta denna karta, den kommer att leda dig till universitetshuset.\n(Kolla nu i din ryggsäck så borde du se kartan)")
+                    inventory.append("en karta")
             else:
                 print("Du försöker prata med Aletta men hon står på andra sidan av salen.")
+        elif action == "giveWalletToAletta":
+            if "Alettas plånbok" in inventory:
+                print(f"Tack {name} för all din hjälp, jag är evigt tacksam för att du hittat min plånbok! Som tack vill jag erbjuda dig tio riksdaler.\n(Kolla nu i din ryggsäck så borde du se tio riksdaler)")
+                inventory.append("10rdr")
+                inventory.remove("Alettas plånbok")
+            else:
+                print("Du har inte Alettas plånbok.")
         elif action == "goToAletta":
             if pos == "aletta":
                 print("Du är redan vid Aletta och hon stirrar dig i ögonen, ner in i din själ...")
@@ -120,7 +132,6 @@ def levelOne(inventory):
                 print("Du tog hästen men tappade bort dig i stan då du inte hade en destination. Du rider tillbaka till domkyrkan ur desperation... Testa ange din destination.")
             else:
                 print("Hästen är för långt bort, pröva gå till hästen.")
-
         elif action == "goToHorse":
             if pos == "horse":
                 print("Du kliver tre millimeter närmare hästen. Hästen ger dig en konstig blick...")
@@ -136,7 +147,7 @@ def levelOne(inventory):
         print()
 def levelTwo(inventory):
     print("Du är vid entrén av universitetshuset.")
-    pos = "entrance"
+    pos = "vid entrén"
     while True:
         playerInput = input("Vad vill du göra? -> ")
         action = determineAction(playerInput, actionsA2)
@@ -145,24 +156,49 @@ def levelTwo(inventory):
                 openInv(inventory)
             case "enter":
                 print("Du går in i universitetshuset och befinner dig nu i aulan där det sker en föreläsning om bibelkunskap.")
+                pos = "aulan"
+            case "goToJohan":
+                print(f"Hej {name} vad kul att se dig här! Kan jag hjälpa dig?")
+                pos = "vid johan"
+            case "goToReception":
+                print(f"Hej {name} välkommen till expeditionen, hur kan jag hjälpa er?")
+                pos = "i expeditionen"
+            case "plånbok":
+                if pos == "aulan":
+                    print("Du letar hektiskt i aulan men hittar inte plånboken... Men på föreläsningen ser du lärarassistenten Johan Snider, gå till honom och fråga om han har sett Alettas plånbok.")
+                elif pos == "vid johan":
+                    print("Jag har tyvärr inte sett Alettas plånbok, testa fråga i expeditionen om de har fått in en plånbok.")
+                elif pos == "i expeditionen":
+                    print("Ja, vi har fått in en plånbok med Alettas namn på. Var så god och ta den!\n(Kolla nu i din ryggsäck så borde du se Alettas plånbok)")
+                    inventory.append("Alettas plånbok")
+                else:
+                    print(f"Du står {pos}, gå till aulan för att leta efter plånboken.")
+            case "goToDomkyrkan":
+                    print("Du tar hästen och rider till domkyrkan\n")
+                    levelOne(inventory)
             case _:
                 print("Inget hände...")
         print()
                 
         
 #Globala variabler:
-inventory = []
+inventory = ["pinne","sopborste"]
 actionsA1 = {
     "talkToAletta":[["snacka","prata","tala"],[],["aletta"],["inte"]],
     "goToAletta":[["gå"],[],["aletta"],["inte"]],
-    "takeTheHorseToLvlTwo":[["rida","rid","ta"],["universitetshuset"],[],["inte"]],
+    "takeTheHorseToLvlTwo":[["rida","rid","ta","åka","åk","åker"],["universitetshuset"],[],["inte"]],
     "takeTheHorseAndGetLost":[["rida","rid","ta"],[],[],["inte"]],
     "goToHorse":[["gå"],[],["häst","hästen"],["inte"]],
+    "giveWalletToAletta":[["ge","återlämna","ger"],["plånbok","plonkan","plånboken","plonka"],["aletta"],["inte"]],
     "aletta":[[],[],["aletta"],[]],
     "karl":[[],[],["karl"],[]]
     }
 actionsA2 = {
-    "enter":[["gå"],["in"],[],[]]
+    "enter":[["gå","öppna","dörr","dörren"],[],[],[]],
+    "plånbok":[[],[],["plånbok","plånboken","plånka","plånkan"],[]],
+    "goToJohan":[["gå","snacka","prata","tala"],[],["johan","snider"],["inte"]],
+    "goToReception":[["gå","snacka","prata","tala","besök","fråga","frågar"],[],["expeditionen","expedition","reception","receptionen"],["inte"]],
+    "goToDomkyrkan":[["gå","rid","rida","häst","hästen","återvänd","åk"],[],["domkyrkan","aletta","karl","domkyrka","kyrka","kyrkan"],[]]
     }
 #actionsA_ = {"action_name":[[verbs],[adjectives],[nouns],[forbiddenwords]]}
 
