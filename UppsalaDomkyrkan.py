@@ -21,8 +21,8 @@ def stringToList(phrase):
     return lst
 
 def determineAction(input, location):
-    location["openInv"] = [["öppna","se","kolla","titta","open","opn"],[],["ryggsäck", "ryggsäcken","inv","inventory"],[]]
-    location["openMap"] = [["öppna","se","kolla","titta","open","opn","ta","använd"],[],["map","karta","kartan"],[]]
+    location["openInv"] = [["öppna","se","kolla","titta","open","opn","kollar"],[],["ryggsäck", "ryggsäcken","inv","inventory"],[]]
+    location["openMap"] = [["öppna","se","kolla","titta","open","opn","ta","använd","kollar"],[],["map","karta","kartan"],[]]
     for action in location:
         verbExists = False
         adjectiveExists = False
@@ -117,6 +117,7 @@ def openMap(inventory):
         print("Du har ingen karta...")
 
 def levelOne(inventory):
+    global alettaHasWallet 
     print("Du är i domkyrkan.")
     pos = "karl"
     while True:
@@ -130,6 +131,7 @@ def levelOne(inventory):
             if pos == "aletta":
                 if "Alettas plånbok" in inventory:
                     print(f"Tack {name} för all din hjälp, jag är evigt tacksam för att du hittat min plånbok! Som tack vill jag erbjuda dig tio riksdaler.\n(Kolla nu i din ryggsäck så borde du se tio riksdaler)")
+                    alettaHasWallet = True
                     inventory.append("10rdr")
                     inventory.remove("Alettas plånbok")
                 else:
@@ -140,6 +142,7 @@ def levelOne(inventory):
         elif action == "giveWalletToAletta":
             if "Alettas plånbok" in inventory:
                 print(f"Tack {name} för all din hjälp, jag är evigt tacksam för att du hittat min plånbok! Som tack vill jag erbjuda dig tio riksdaler.\n(Kolla nu i din ryggsäck så borde du se tio riksdaler)")
+                alettaHasWallet = True
                 inventory.append("10rdr")
                 inventory.remove("Alettas plånbok")
             else:
@@ -180,6 +183,7 @@ def levelOne(inventory):
             print("Inget hände...")
         print()
 def levelTwo(inventory):
+    global alettaHasWallet
     print("Du är vid entrén av universitetshuset.")
     pos = "vid entrén"
     while True:
@@ -217,8 +221,11 @@ def levelTwo(inventory):
                     if "Alettas plånbok" in inventory:
                         print("Du har redan fått Alettas plånbok.")
                     else:
-                        print("Ja, vi har fått in en plånbok med Alettas namn på. Var så god och ta den!\n(Kolla nu i din ryggsäck så borde du se Alettas plånbok)")
-                        inventory.append("Alettas plånbok")
+                        if alettaHasWallet == False:
+                            print("Ja, vi har fått in en plånbok med Alettas namn på. Var så god och ta den!\n(Kolla nu i din ryggsäck så borde du se Alettas plånbok)")
+                            inventory.append("Alettas plånbok")
+                        else:
+                            print("Tyvärr har vi inte fått in en plånbok...")
                 else:
                     if "Alettas plånbok" in inventory:
                         print(f"Du står {pos}.")
@@ -233,12 +240,13 @@ def levelTwo(inventory):
                 
         
 #Globala variabler:
+alettaHasWallet = False
 inventory = []
 actionsA1 = {
-    "talkToAletta":[["snacka","prata","tala"],[],["aletta","henne","hon"],["inte"]],
+    "talkToAletta":[["snacka","prata","tala","be","säga","berätta"],[],["aletta","henne","hon"],["inte"]],
     "goToAletta":[["gå"],[],["aletta","dit","salen","närmare"],["inte"]],
     "takeTheHorseToLvlTwo":[["rida","rid","ta","åka","åk","åker","gå"],["universitetshuset","universitetsaulan"],[],["inte"]],
-    "takeTheHorseAndGetLost":[["rida","rid","ta"],[],[],["inte"]],
+    "takeTheHorseAndGetLost":[["rida","rid","ta"],[],[],["inte","hand","plånboken","han"]],
     "goToHorse":[["gå"],[],["häst","hästen"],["inte"]],
     "giveWalletToAletta":[["ge","återlämna","ger"],["plånbok","plonkan","plånboken","plonka"],["aletta","henne","hon","tillbaka"],["inte"]],
     "aletta":[[],[],["aletta"],[]],
